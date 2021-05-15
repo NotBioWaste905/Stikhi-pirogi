@@ -101,7 +101,7 @@ class Poem:
 
         res = None
         while res is None:
-            res = text_model.make_short_sentence(200)
+            res = model.make_short_sentence(200)
         res = res.split()
         self.lines = chunks(res, 5)
 

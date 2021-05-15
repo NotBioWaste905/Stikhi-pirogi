@@ -22,10 +22,13 @@ with open("dictionaries/first_bigrams_perc.json", 'r', encoding="utf-8") as f:
 def send_post(minutes=1):
     while True:
         time.sleep(minutes*20)
-
-        periodical_poem.generate_token("unigram", np.random.choice([x for x in first_words.keys()], 1, [x for x in first_words.values()])[0])
-        uni = periodical_poem.show()
-        periodical_poem.clear()
+        try:
+            periodical_poem.generate_token("unigram", np.random.choice([x for x in first_words.keys()], 1, [x for x in first_words.values()])[0])
+            uni = periodical_poem.show()
+            periodical_poem.clear()
+        except:
+            uni = "An error occured"
+            periodical_poem.clear()
 
         periodical_poem.generate_token("bigram", np.random.choice([x for x in first_bigrams.keys()], 1, [x for x in first_bigrams.values()])[0])
         bi = periodical_poem.show()
@@ -74,7 +77,10 @@ def send_request(message):
 @bot.callback_query_handler(func=None)
 def send_response(message):
     if message.data == '1':
-        poem.generate_token("unigram", np.random.choice([x for x in first_words.keys()], 1, [x for x in first_words.values()])[0])
+        try:
+            poem.generate_token("unigram", np.random.choice([x for x in first_words.keys()], 1, [x for x in first_words.values()])[0])
+        except KeyError:
+            bot.send_message(message.chat.id, "Произошла досадная оШиБкА.. попробуйте ещё раз")
     elif message.data == '2':
         poem.generate_token("bigram", np.random.choice([x for x in first_bigrams.keys()], 1, [x for x in first_bigrams.values()])[0])
     elif message.data == '3':
